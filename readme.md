@@ -7,5 +7,5 @@ Exercises that I didn't think of myself. for use in education
 
 <details open>
   <summary>2023</summary>
-  <img align="center" src="https://cdn.discordapp.com/attachments/639137693975969805/1183120834018160781/image.png?ex=65872e24&is=6574b924&hm=0e1470c994e316381f3878658b06bb934ae64154ed829fadce3108a680bd4b03&">
+  <img align="center" src="https://cdn.discordapp.com/attachments/639137693975969805/1183296713922973716/image.png?ex=6587d1f1&is=65755cf1&hm=dc96b649bbd2719f7b1ca052cec17cb7a8e23f93e1f22a7285f1b59bc08af037&">
 </details>
