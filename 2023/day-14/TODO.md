@@ -1,0 +1,37 @@
+- **Imports:**
+  - `itertools.count`: Generates an infinite sequence of consecutive integers.
+- **Data Loading:**
+  - `input.txt`: File containing the initial grid layout.
+  - `ls`: List of lines in the file.
+  - `board`: Dictionary mapping complex numbers (representing grid positions) to water ("O") or sand (".").
+- **Function `tilt(board, d)`:**
+  - Simulates tilting the grid in a specific direction (d).
+  - Loops until no more water flows.
+  - Checks each position:
+    - If water is present and has sand below (in direction d), move water down and sand up.
+    - Otherwise, keep the existing element.
+  - Returns the updated board.
+- **Function `load(board)`:**
+  - Calculates the total score based on water depth.
+  - For each water cell, subtracts its depth from 100.
+  - Returns the sum of scores for all water cells.
+- **Part 1:**
+  - Calls `tilt(board)` repeatedly until the water stabilizes.
+  - Prints the final score after stabilization.
+- **Function `cycle(board)`:**
+  - Tilts the board in all four directions (up, down, left, right).
+  - Returns the final board after tilting all directions.
+- **Part 2:**
+  - Creates an empty `seen` list to track past board states.
+  - Uses `count` to generate an infinite loop.
+  - Tilts the board in all directions using `cycle(board)`.
+  - Checks if the current board state has already been seen in `seen`.
+    - If yes, calculates the cycle length ("start" - index) and remainder of iterations to reach the state again.
+    - Uses the remainder to find the desired board state from the previously seen list.
+  - Prints the score of the desired board state.
+
+**Key Points:**
+
+- The code uses complex numbers to represent positions in a two-dimensional grid.
+- The main logic involves tilting the grid and moving water down while filling empty spaces with sand.
+- Part 2 finds the repeating cycle of board states and uses it to efficiently calculate the desired score.
