@@ -1,61 +1,40 @@
-# อ่านข้อมูลจากไฟล์
 with open("input.txt") as f:
-    lines = f.read().strip().split("\n")
+    ls = f.read().strip().split("\n")
 
-# สร้างแผนที่ (board)
-board = {
-    complex(row, col): char
-    for row, line in enumerate(lines)
-    for col, char in enumerate(line)
-}
+board = {i + 1j * j: x for i, l in enumerate(ls) for j, x in enumerate(l)}
 
-# ส่วนที่ 1: นับตำแหน่งที่เคยเดินผ่าน
-start_position = next(pos for pos, char in board.items() if char == "^")
-wall_positions = {pos for pos, char in board.items() if char == "#"}
-visited_positions = set()
-
-current_position = start_position
-direction = -1  # ทิศทางเริ่มต้น (ซ้าย)
-
-while current_position in board:
-    visited_positions.add(current_position)
-
-    # ถ้าทิศทางข้างหน้ามี "กำแพง" ให้เปลี่ยนทิศทาง
-    if current_position + direction in wall_positions:
-        direction *= -1j  # หมุนทิศทาง 90 องศา
+# Part 1
+start = next(w for w, x in board.items() if x == "^")
+walls = {w for w, x in board.items() if x == "#"}
+seen = set()
+z = start
+dz = -1
+while z in board:
+    seen.add(z)
+    if z + dz in walls:
+        dz *= -1j
         continue
+    z += dz
 
-    # เดินไปข้างหน้า
-    current_position += direction
-
-print(len(visited_positions))  # จำนวนตำแหน่งที่เคยเดินผ่าน
+print(len(seen))
 
 
-# ส่วนที่ 2: ตรวจสอบว่าการเพิ่ม "กำแพง" ใหม่จะทำให้เกิด "ลูป" หรือไม่
-def causes_loop(new_wall):
-    all_walls = wall_positions | {new_wall}  # เพิ่มกำแพงใหม่
-    current_position = start_position
-    direction = -1
-    visited_states = set()
-
-    while current_position in board:
-        # ถ้าสถานะนี้ (ตำแหน่ง + ทิศทาง) เคยเจอมาแล้ว แสดงว่าเกิดลูป
-        if (current_position, direction) in visited_states:
-            return True
-
-        visited_states.add((current_position, direction))
-
-        # ถ้าทิศทางข้างหน้ามีกำแพง ให้เปลี่ยนทิศทาง
-        if current_position + direction in all_walls:
-            direction *= -1j
+# Part 2
+def loops(x):
+    new_walls = walls | {x}
+    z = start
+    dz = -1
+    seen = set()
+    while z in board:
+        if (z, dz) in seen:
+            return True  # Loop detected
+        seen.add((z, dz))
+        if z + dz in new_walls:
+            dz *= -1j  # Change direction
             continue
-
-        # เดินไปข้างหน้า
-        current_position += direction
-
-    return False
+        z += dz
+    return False  # No loop detected
 
 
-# คำนวณว่าการเพิ่มกำแพงในตำแหน่งที่เคยเดินผ่านจะทำให้เกิดลูปกี่ครั้ง
-loop_count = sum(causes_loop(pos) for pos in visited_positions)
-print(loop_count)
+# Check only those that might form loops
+print(sum(1 for w in seen if loops(w)) - 1)
